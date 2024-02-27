@@ -85,7 +85,7 @@ const Pagination: React.FC = () => {
 
   return (
     <>
-      {false && (
+      {subscribers.length > 0 ?  
         <PaginationContainer>
           <PaginationTitle>
             Page {pageIndex + 1} of {totalPages}
@@ -101,7 +101,8 @@ const Pagination: React.FC = () => {
             ></PageButtonRight>
           </PageButtonsContainer>
         </PaginationContainer>
-      )}
+        :null
+      }
     </>
   );
 };
