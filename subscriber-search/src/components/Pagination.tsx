@@ -1,9 +1,9 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setPageIndex } from "../redux/subscribersSlice";
-import { RootState } from "../redux/store";
-import styled from "styled-components";
-import { Subscriber } from "../interfaces/types";
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPageIndex } from '../redux/subscribersSlice';
+import { RootState } from '../redux/store';
+import styled from 'styled-components';
+import { Subscriber } from '../interfaces/types';
 
 const PaginationContainer = styled.div`
   display: flex;
@@ -11,6 +11,7 @@ const PaginationContainer = styled.div`
   align-items: center;
   flex-direction: column;
   margin-top: 1.25rem;
+  margin-bottom: 3.125rem;
 `;
 
 const PaginationTitle = styled.div`
@@ -31,7 +32,7 @@ const PageButtonLeft = styled.button`
   border: none;
   cursor: pointer;
   margin: 0 0.3125rem;
-  background-image: url("assets/img/arrow_left.svg");
+  background-image: url('assets/img/arrow_left.svg');
   background-repeat: no-repeat;
   background-position: 0.625rem;
   border-radius: 0.5rem;
@@ -50,10 +51,10 @@ const PageButtonRight = styled.button`
   color: #fff;
   border: none;
   cursor: pointer;
-  background-image: url("assets/img/arrow_right.svg");
+  background-image: url('assets/img/arrow_right.svg');
   background-repeat: no-repeat;
   margin: 0 0.3125rem;
-  background-position: 0.625rem;
+  background-position: 0.725rem;
   height: 2.875rem;
 
   &:disabled {
@@ -85,7 +86,7 @@ const Pagination: React.FC = () => {
 
   return (
     <>
-      {subscribers.length > 0 ?  
+      {subscribers.length > 0 ? (
         <PaginationContainer>
           <PaginationTitle>
             Page {pageIndex + 1} of {totalPages}
@@ -101,8 +102,7 @@ const Pagination: React.FC = () => {
             ></PageButtonRight>
           </PageButtonsContainer>
         </PaginationContainer>
-        :null
-      }
+      ) : null}
     </>
   );
 };

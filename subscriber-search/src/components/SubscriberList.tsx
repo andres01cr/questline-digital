@@ -1,8 +1,8 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import styled from "styled-components";
-import { RootState } from "../redux/store";
-import { Subscriber } from "../interfaces/types";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { RootState } from '../redux/store';
+import { Subscriber } from '../interfaces/types';
 
 const GridContainer = styled.ul`
   display: flex;
@@ -40,6 +40,11 @@ const SubscriberName = styled.div`
   font-size: 1.125rem;
   color: rgba(17, 17, 17, 1);
   font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 93%;
+  text-align: justify;
 `;
 
 const SubscriberEmail = styled.div`
@@ -59,13 +64,20 @@ const NoSubscribers = styled.label`
   margin: 0 auto;
 `;
 
-const SubscriberContainer = styled.div``;
+const SubscriberContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
-const SubscriberIdImage = styled.span`
+const SubscriberIdImage = styled.div`
   font-size: 0.875rem;
   color: rgba(163, 163, 163, 1);
-  background-image: url("assets/img/id.svg");
+  background-image: url('assets/img/id.svg');
   background-repeat: no-repeat;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.125rem;
+  margin-right: 0.3125rem;
 `;
 
 const SubscriberList: React.FC = () => {

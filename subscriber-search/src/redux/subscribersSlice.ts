@@ -1,23 +1,31 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { SubscribersState, ActionTypes, AsyncActionTypes, Subscriber } from '../interfaces/types';
+import { SubscribersState, AsyncActionTypes } from '../interfaces/types';
 
 export const searchSubscribers = createAsyncThunk(
   AsyncActionTypes.SEARCH_SUBSCRIBERS_PENDING,
-  async ({ pageIndex, searchTerm }: { pageIndex: number; searchTerm: string }) => {
-    const response = await axios.get(`https://tech-test.questline.com/searchsubscribers?pageIndex=${pageIndex}&search=${searchTerm}`);
+  async ({
+    pageIndex,
+    searchTerm,
+  }: {
+    pageIndex: number;
+    searchTerm: string;
+  }) => {
+    const response = await axios.get(
+      `https://tech-test.questline.com/searchsubscribers?pageIndex=${pageIndex}&search=${searchTerm}`
+    );
     return response.data;
   }
 );
 
 const initialState: SubscribersState = {
-    subscribers: [],
-    loading: false,
-    error: null,
-    pageIndex: 0,
-    searchTerm: '',
-    totalResults: 0,
-    pageSize: 10,
+  subscribers: [],
+  loading: false,
+  error: null,
+  pageIndex: 0,
+  searchTerm: '',
+  totalResults: 0,
+  pageSize: 10,
 };
 
 const subscribersSlice = createSlice({
@@ -31,14 +39,17 @@ const subscribersSlice = createSlice({
       state.pageIndex = action.payload;
     },
   },
-  extraReducers: builder => {
-    builder.addCase(searchSubscribers.pending, state => {
+  extraReducers: (builder) => {
+    builder.addCase(searchSubscribers.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
     builder.addCase(searchSubscribers.fulfilled, (state, action) => {
       state.loading = false;
       state.subscribers = action.payload.subscribers;
+      state.totalResults = action.payload.totalResults;
+      state.pageIndex = action.payload.pageIndex;
+      state.pageSize = action.payload.pageSize;
     });
     builder.addCase(searchSubscribers.rejected, (state, action) => {
       state.loading = false;

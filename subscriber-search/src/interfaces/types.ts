@@ -5,8 +5,8 @@ export interface Subscriber {
 }
 
 export interface SubscribersState {
-  totalResults: any;
-  pageSize: any;
+  totalResults: number;
+  pageSize: number;
   subscribers: Subscriber[];
   loading: boolean;
   error: string | null;

@@ -35,6 +35,16 @@ const App: React.FC = () => {
     if (searchTerm.length >= 3 || searchTerm === "") {
       dispatch(searchSubscribers({ pageIndex, searchTerm }));
     }
+
+    const updateURL = () => {
+      const urlSearchParams = new URLSearchParams();
+      urlSearchParams.set("pageIndex", String(pageIndex));
+      urlSearchParams.set("search", searchTerm);
+      window.history.replaceState({}, "", `?${urlSearchParams}`);
+    };
+
+    updateURL();
+    
   }, [dispatch, pageIndex, searchTerm]);
 
   return (
