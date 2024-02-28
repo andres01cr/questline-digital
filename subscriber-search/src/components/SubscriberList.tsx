@@ -15,13 +15,18 @@ const GridContainer = styled.ul`
 `;
 
 const GridItem = styled.li`
-  flex: 0 0 30%;
-  max-width: 30%;
+  flex: 0 0 100%;
+  max-width: 100%;
   padding: 0.625rem;
 
-  @media screen and (max-width: 768px) {
-    flex: 0 0 50%;
-    max-width: 50%;
+  @media screen and (min-width: 768px) {
+    flex: 0 0 45%;
+    max-width: 45%;
+  }
+
+  @media screen and (min-width: 1024px) {
+    flex: 0 0 30%;
+    max-width: 30%;
   }
 `;
 
