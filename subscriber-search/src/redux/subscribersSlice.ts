@@ -55,7 +55,6 @@ const subscribersSlice = createSlice({
       state.loading = false;
       state.subscribers = action.payload.subscribers;
       state.totalResults = action.payload.totalResults;
-      // state.pageIndex = action.payload.pageIndex;
       state.pageSize = action.payload.pageSize;
     });
     builder.addCase(searchSubscribers.rejected, (state, action) => {
