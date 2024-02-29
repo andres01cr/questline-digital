@@ -31,7 +31,7 @@ const AppContainerDescription = styled.h1`
 `;
 
 const App: React.FC = () => {
-  const { pageIndex, searchTerm } = useSelector(
+  const { pageIndex, searchTerm, isEmptyCaseSubmit } = useSelector(
     (state: RootState) => state.subscribers
   );
   const dispatch: AppDispatch = useDispatch();
@@ -46,7 +46,7 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (searchTerm.length >= 3) {
+    if (searchTerm.length >= 3 || isEmptyCaseSubmit ) {
       dispatch(setSearchError({ hasError: false, message: '' }));
       dispatch(searchSubscribers({ pageIndex, searchTerm }));
     } else {
@@ -60,9 +60,6 @@ const App: React.FC = () => {
       }
     }
 
-    if (searchTerm === '' && pageIndex > 0) {
-      dispatch(searchSubscribers({ pageIndex, searchTerm }));
-    }
   }, [dispatch, pageIndex, searchTerm]);
 
   useEffect(() => {

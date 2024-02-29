@@ -17,6 +17,7 @@ export interface SubscribersState {
   pageIndex: number;
   searchTerm: string;
   searchError: Error;
+  isEmptyCaseSubmit: boolean;
 }
 
 export enum ActionTypes {

@@ -6,6 +6,7 @@ import {
   setPageIndex,
   setSearchError,
   searchSubscribers,
+  setIsEmptyCaseSubmit,
 } from '../redux/subscribersSlice';
 import { RootState, AppDispatch } from '../redux/store';
 
@@ -77,6 +78,7 @@ const SearchForm: React.FC = () => {
       setSearchError({ hasError: false, message: '' });
       dispatch(setSearchTerm(search));
       dispatch(setPageIndex(initialIndex));
+      dispatch(setIsEmptyCaseSubmit(false));
     } else {
       if (search !== '') {
         dispatch(
@@ -89,6 +91,7 @@ const SearchForm: React.FC = () => {
     }
 
     if (search === '') {
+      dispatch(setIsEmptyCaseSubmit(true));
       dispatch(
         searchSubscribers({ pageIndex: initialIndex, searchTerm: search })
       );
