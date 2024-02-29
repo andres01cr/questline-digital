@@ -46,7 +46,7 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (searchTerm.length >= 3 || isEmptyCaseSubmit ) {
+    if (searchTerm.length >= 3 || isEmptyCaseSubmit) {
       dispatch(setSearchError({ hasError: false, message: '' }));
       dispatch(searchSubscribers({ pageIndex, searchTerm }));
     } else {
@@ -59,7 +59,6 @@ const App: React.FC = () => {
         );
       }
     }
-
   }, [dispatch, pageIndex, searchTerm]);
 
   useEffect(() => {

@@ -69,7 +69,11 @@ const subscribersSlice = createSlice({
   },
 });
 
-export const { setSearchTerm, setPageIndex, setSearchError, setIsEmptyCaseSubmit } =
-  subscribersSlice.actions;
+export const {
+  setSearchTerm,
+  setPageIndex,
+  setSearchError,
+  setIsEmptyCaseSubmit,
+} = subscribersSlice.actions;
 
 export default subscribersSlice.reducer;
