@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { setSearchTerm, setPageIndex } from '../redux/subscribersSlice';
-import { RootState } from '../redux/store';
+import {
+  setSearchTerm,
+  setPageIndex,
+  setSearchError,
+  searchSubscribers,
+} from '../redux/subscribersSlice';
+import { RootState, AppDispatch } from '../redux/store';
 
 const FormContainer = styled.div`
   margin-bottom: 1.25rem;
@@ -46,11 +51,6 @@ const ErrorMessage = styled.div`
   margin-top: 0.625rem;
 `;
 
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
 const Loading = styled.div`
   font-size: 1rem;
   color: rgba(99, 99, 99, 1);
@@ -58,30 +58,46 @@ const Loading = styled.div`
 `;
 
 const SearchForm: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const [search, setSearch] = useState('');
-  const [showError, setShowError] = useState(false);
 
-  const searchCount = search.length;
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
-  const loading: boolean = useSelector(
-    (state: RootState) => state.subscribers.loading
-  );
-
+  const {
+    searchTerm,
+    loading,
+    searchError: { hasError, message },
+  } = useSelector((state: RootState) => state.subscribers);
+  const initialIndex = 0;
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (search.length >= 3) {
-      setShowError(false);
+      setSearchError({ hasError: false, message: '' });
       dispatch(setSearchTerm(search));
-      dispatch(setPageIndex(0));
+      dispatch(setPageIndex(initialIndex));
     } else {
-      setShowError(true);
+      if (search !== '') {
+        dispatch(
+          setSearchError({
+            hasError: true,
+            message: 'Enter at least 3 characters',
+          })
+        );
+      }
+    }
+
+    if (search === '') {
+      dispatch(
+        searchSubscribers({ pageIndex: initialIndex, searchTerm: search })
+      );
     }
   };
 
+  useEffect(() => {
+    setSearch(searchTerm);
+  }, [searchTerm]);
   return (
     <FormContainer>
       <form onSubmit={handleSubmit}>
@@ -93,7 +109,7 @@ const SearchForm: React.FC = () => {
         />
         <Button type="submit" />
       </form>
-      {showError && <ErrorMessage>Enter at least 3 characters</ErrorMessage>}
+      {hasError && <ErrorMessage>{message}</ErrorMessage>}
       {loading && <Loading>Loading...</Loading>}
     </FormContainer>
   );

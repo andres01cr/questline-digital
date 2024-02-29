@@ -90,9 +90,13 @@ const SubscriberList: React.FC = () => {
     (state: RootState) => state.subscribers.subscribers
   );
 
+  const {
+    searchTerm,
+    searchError: { hasError },
+  } = useSelector((state: RootState) => state.subscribers);
   return (
     <GridContainer>
-      {subscribers.length ? (
+      {subscribers.length > 0 && (
         <>
           {subscribers.map((subscriber) => (
             <GridItem key={subscriber.SubscriberId}>
@@ -107,7 +111,8 @@ const SubscriberList: React.FC = () => {
             </GridItem>
           ))}
         </>
-      ) : (
+      )}
+      {subscribers.length === 0 && !hasError && searchTerm.length > 0 && (
         <NoSubscribers>No results. Try a different search.</NoSubscribers>
       )}
     </GridContainer>

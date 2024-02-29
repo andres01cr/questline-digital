@@ -26,6 +26,10 @@ const initialState: SubscribersState = {
   searchTerm: '',
   totalResults: 0,
   pageSize: 10,
+  searchError: {
+    hasError: false,
+    message: '',
+  },
 };
 
 const subscribersSlice = createSlice({
@@ -38,6 +42,9 @@ const subscribersSlice = createSlice({
     setPageIndex(state, action) {
       state.pageIndex = action.payload;
     },
+    setSearchError(state, action) {
+      state.searchError = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(searchSubscribers.pending, (state) => {
@@ -48,7 +55,7 @@ const subscribersSlice = createSlice({
       state.loading = false;
       state.subscribers = action.payload.subscribers;
       state.totalResults = action.payload.totalResults;
-      state.pageIndex = action.payload.pageIndex;
+      // state.pageIndex = action.payload.pageIndex;
       state.pageSize = action.payload.pageSize;
     });
     builder.addCase(searchSubscribers.rejected, (state, action) => {
@@ -58,6 +65,7 @@ const subscribersSlice = createSlice({
   },
 });
 
-export const { setSearchTerm, setPageIndex } = subscribersSlice.actions;
+export const { setSearchTerm, setPageIndex, setSearchError } =
+  subscribersSlice.actions;
 
 export default subscribersSlice.reducer;

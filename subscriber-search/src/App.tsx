@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
-import { RootState, AppDispatch } from "./redux/store";
-import SearchForm from "./components/SearchForm";
-import SubscriberList from "./components/SubscriberList";
-import Pagination from "./components/Pagination";
-import { searchSubscribers, setPageIndex, setSearchTerm } from "./redux/subscribersSlice";
-import { useHistory, useLocation } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { RootState, AppDispatch } from './redux/store';
+import SearchForm from './components/SearchForm';
+import SubscriberList from './components/SubscriberList';
+import Pagination from './components/Pagination';
+import {
+  searchSubscribers,
+  setPageIndex,
+  setSearchTerm,
+  setSearchError,
+} from './redux/subscribersSlice';
 
 const AppContainer = styled.div`
   text-align: center;
@@ -27,38 +31,50 @@ const AppContainerDescription = styled.h1`
 `;
 
 const App: React.FC = () => {
-  const { pageIndex: reduxPageIndex, searchTerm: reduxSearchTerm } = useSelector(
+  const { pageIndex, searchTerm } = useSelector(
     (state: RootState) => state.subscribers
   );
   const dispatch: AppDispatch = useDispatch();
-  const history = useHistory();
-  const location = useLocation();
 
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams(location.search);
-    const pageIndex = Number(urlSearchParams.get("pageIndex")) || 0;
-    const searchTerm = urlSearchParams.get("search") || "";
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const initialPageIndex = Number(urlSearchParams.get('pageIndex')) || 0;
+    const initialSearchTerm = urlSearchParams.get('search') || '';
 
-    dispatch(setPageIndex(pageIndex));
-    dispatch(setSearchTerm(searchTerm));
-  }, [dispatch, location.search]);
+    dispatch(setPageIndex(initialPageIndex));
+    dispatch(setSearchTerm(initialSearchTerm));
+  }, [dispatch]);
 
   useEffect(() => {
-    if (reduxSearchTerm.length >= 3 || reduxSearchTerm === "") {
-      dispatch(searchSubscribers({ pageIndex: reduxPageIndex, searchTerm: reduxSearchTerm }));
+    if (searchTerm.length >= 3) {
+      dispatch(setSearchError({ hasError: false, message: '' }));
+      dispatch(searchSubscribers({ pageIndex, searchTerm }));
+    } else {
+      if (searchTerm !== '') {
+        dispatch(
+          setSearchError({
+            hasError: true,
+            message: 'Enter at least 3 characters',
+          })
+        );
+      }
     }
-  }, [dispatch, reduxPageIndex, reduxSearchTerm]);
+  }, [dispatch, pageIndex, searchTerm]);
 
   useEffect(() => {
-    const urlSearchParams = new URLSearchParams();
-    urlSearchParams.set("pageIndex", String(reduxPageIndex));
-    urlSearchParams.set("search", reduxSearchTerm);
-    const newURL = `?${urlSearchParams}`;
+    const updateURL = () => {
+      const urlSearchParams = new URLSearchParams();
+      urlSearchParams.set('pageIndex', String(pageIndex));
+      urlSearchParams.set('search', searchTerm);
+      const newURL = `?${urlSearchParams}`;
 
-    if (location.search !== newURL) {
-      history.replace(newURL);
-    }
-  }, [history, location.search, reduxPageIndex, reduxSearchTerm]);
+      if (window.location.search !== newURL) {
+        window.history.replaceState({}, '', newURL);
+      }
+    };
+
+    updateURL();
+  }, [pageIndex, searchTerm]);
 
   return (
     <AppContainer>

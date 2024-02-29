@@ -4,6 +4,10 @@ export interface Subscriber {
   Email: string;
 }
 
+export interface Error {
+  hasError: boolean;
+  message: string;
+}
 export interface SubscribersState {
   totalResults: number;
   pageSize: number;
@@ -12,6 +16,7 @@ export interface SubscribersState {
   error: string | null;
   pageIndex: number;
   searchTerm: string;
+  searchError: Error;
 }
 
 export enum ActionTypes {
