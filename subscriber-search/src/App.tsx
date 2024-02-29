@@ -59,6 +59,10 @@ const App: React.FC = () => {
         );
       }
     }
+
+    if (searchTerm === '' && pageIndex > 0) {
+      dispatch(searchSubscribers({ pageIndex, searchTerm }));
+    }
   }, [dispatch, pageIndex, searchTerm]);
 
   useEffect(() => {
